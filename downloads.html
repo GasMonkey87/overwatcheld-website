@@ -1,6 +1,34 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Downloads | OverWatch ELD</title><link rel="stylesheet" href="assets/styles.css"></head><body>
-<header class="header"><nav class="nav"><a class="brand" href="index.html"><span class="brand-mark">OW</span><span>OverWatch ELD</span></a><div class="nav-links"><a href="features/">Features</a><a href="downloads/">Downloads</a><a href="live-map/">Live Map</a><a href="dashboard/">Dashboard</a><a href="maintenance/">Maintenance</a><a href="support/">Support</a></div></nav></header>
-<main><section class="wrap"><div class="kicker">Downloads</div><h1>Download OverWatch ELD</h1><p class="lead">Install the Windows client, connect ATS telemetry, then link your VTC server.</p><div class="grid two"><div class="panel"><h3>Windows Client</h3><p>The website is ready. The real app file still needs to be uploaded as a GitHub release asset named <strong>OverWatchELD.exe</strong>.</p><div class="actions"><a class="btn" href="https://github.com/GasMonkey87/overwatcheld-website/releases/latest/download/OverWatchELD.exe">Download Latest</a><a class="btn secondary" href="https://github.com/GasMonkey87/overwatcheld-website/releases">View Releases</a></div></div><div class="panel"><h3>Setup Checklist</h3><table class="table"><tr><th>#</th><th>Task</th></tr><tr><td>1</td><td>Download the Windows client.</td></tr><tr><td>2</td><td>Start American Truck Simulator.</td></tr><tr><td>3</td><td>Connect telemetry from the ELD dashboard.</td></tr><tr><td>4</td><td>Pair your VTC account.</td></tr></table></div></div><div class="notice">To make the Download Latest button work, create a GitHub release and upload the file named <strong>OverWatchELD.exe</strong>.</div></section></main>
-<footer class="footer"><div class="wrap"><span>OverWatch ELD © 2026 Gas Monkey Creations</span><span>The ELD you can count on.</span></div></footer>
-</body></html>
+(async function(){
+  // Replacement for the broken placeholder dispatch.js file.
+  const $ = id => document.getElementById(id);
+  const esc = window.OW ? OW.escapeHtml : (v => String(v ?? ''));
+  const existing = {
+    loadList: $('loadList') || $('loads') || $('dispatchLoads'),
+    driverList: $('driverList') || $('drivers') || $('liveDrivers'),
+    boardCounts: $('boardCounts') || $('counts') || $('dispatchSummary'),
+    refreshBtn: $('refreshBtn')
+  };
+  if (!window.OW) { console.error('Missing /assets/api.js'); return; }
+  function ensure(id, title){
+    let el=$(id); if(el) return el;
+    const main=document.querySelector('main')||document.body; const sec=document.createElement('section'); sec.innerHTML=`<h2>${title}</h2><div id="${id}"></div>`; main.appendChild(sec); return sec.querySelector(`#${id}`);
+  }
+  const loadsEl = existing.loadList || ensure('loadList','Live Loads');
+  const driversEl = existing.driverList || ensure('driverList','Live Drivers');
+  const countsEl = existing.boardCounts || ensure('boardCounts','Dispatch Summary');
+  async function refresh(){
+    try{
+      const [board, loads, drivers] = await Promise.allSettled([
+        OW.request('/api/dispatch/board'), OW.request('/api/dispatch/loads'), OW.request('/api/dispatch/drivers/live')
+      ]);
+      const b = board.status==='fulfilled' ? board.value : {}; const c=b.counts||{};
+      countsEl.textContent = `Unassigned: ${c.unassigned ?? 0} | Assigned: ${c.assigned ?? 0} | In Transit: ${c.inTransit ?? c.in_transit ?? 0} | Delivered: ${c.delivered ?? 0} | Delayed: ${c.delayed ?? 0}`;
+      const loadRows = loads.status==='fulfilled' ? OW.rows(loads.value) : [];
+      loadsEl.innerHTML = loadRows.length ? loadRows.map(l=>`<div class="row"><strong>Load ${esc(OW.pick(l,['loadNumber','id']))}</strong> ${esc(OW.pick(l,['status']))}<br>${esc(OW.pick(l,['commodity']))} • ${esc(OW.pick(l,['pickupLocation','origin']))} → ${esc(OW.pick(l,['dropoffLocation','destination']))}<br>Driver: ${esc(OW.pick(l,['driverName','driverDiscordUserId']))} • Truck: ${esc(OW.pick(l,['truckId','truck']))}</div>`).join('') : '<div class="row">No loads found.</div>';
+      const driverRows = drivers.status==='fulfilled' ? OW.rows(drivers.value) : [];
+      driversEl.innerHTML = driverRows.length ? driverRows.map(d=>`<div class="row"><strong>${esc(OW.pick(d,['driverName','discordUserId']))}</strong> ${esc(OW.pick(d,['dutyStatus','status']))}<br>Truck: ${esc(OW.pick(d,['truck','truckId']))} • Load: ${esc(OW.pick(d,['loadNumber']))} • ${esc(OW.pick(d,['location']))}</div>`).join('') : '<div class="row">No live drivers found.</div>';
+    }catch(e){ countsEl.textContent = e.message || 'Could not load dispatch data.'; }
+  }
+  existing.refreshBtn?.addEventListener('click', refresh);
+  await refresh(); setInterval(refresh,15000);
+})();
