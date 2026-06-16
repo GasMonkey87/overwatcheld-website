@@ -1,313 +1,316 @@
-async function checkAuth() {
-  const res = await fetch("/api/auth/me");
-  const data = await res.json();
+(async function () {
+  const qs = new URLSearchParams(window.location.search);
+  const guildId = (qs.get("guildId") || "").trim();
 
-  if (!data.ok) {
-    window.location = "/login.html";
-    return null;
+  const userPill = document.getElementById("userPill");
+  const heroTitle = document.getElementById("heroTitle");
+  const guildIdChip = document.getElementById("guildIdChip");
+  const userNameChip = document.getElementById("userNameChip");
+  const refreshBtn = document.getElementById("refreshBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  const dutyStatusValue = document.getElementById("dutyStatusValue");
+  const truckValue = document.getElementById("truckValue");
+  const loadValue = document.getElementById("loadValue");
+  const speedValue = document.getElementById("speedValue");
+  const unreadValue = document.getElementById("unreadValue");
+
+  const driverStatusCard = document.getElementById("driverStatusCard");
+  const activeLoadCard = document.getElementById("activeLoadCard");
+  const awardsList = document.getElementById("awardsList");
+  const conversationList = document.getElementById("conversationList");
+  const announcementList = document.getElementById("announcementList");
+  const mapCard = document.getElementById("mapCard");
+
+  let me = null;
+  let myDriverStatus = null;
+
+  function escapeHtml(v) {
+    return String(v ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#39;");
   }
 
-  return data;
-}
-
-async function getJson(url, options) {
-  const res = await fetch(url, options);
-  const text = await res.text();
-
-  let data = {};
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch {
-    throw new Error(`${url} -> ${res.status} (${text || "invalid json"})`);
+  function fmt(v, fallback = "-") {
+    const s = String(v ?? "").trim();
+    return s || fallback;
   }
 
-  if (!res.ok) {
-    throw new Error(`${url} -> ${res.status} (${data.error || text || "request failed"})`);
+  async function getJson(url, options) {
+    const res = await fetch(url, {
+      credentials: "include",
+      ...options
+    });
+
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+    }
+
+    return { res, data };
   }
 
-  return data;
-}
+  async function loadMe() {
+    const { res, data } = await getJson("/api/auth/me");
+    if (!res.ok || !data?.ok) {
+      window.location.href = "/index.html";
+      return false;
+    }
 
-function qs(name) {
-  return new URLSearchParams(window.location.search).get(name) || "";
-}
+    me = data.data;
+    const displayName = me.globalName || me.username || "User";
 
-function currentGuildId() {
-  const ddl = document.getElementById("guildSelect");
-  return (ddl?.value || qs("guildId") || "").trim();
-}
+    userPill.textContent = `Logged in as ${displayName}`;
+    userNameChip.textContent = displayName;
+    guildIdChip.textContent = guildId || "-";
+    heroTitle.textContent = `Welcome, ${displayName}`;
 
-function apiUrl(path) {
-  const guildId = currentGuildId();
-  if (!guildId) return path;
-  return `${path}${path.includes("?") ? "&" : "?"}guildId=${encodeURIComponent(guildId)}`;
-}
-
-function uptimeText(seconds) {
-  const total = Number(seconds || 0);
-  const h = Math.floor(total / 3600);
-  const m = Math.floor((total % 3600) / 60);
-  const s = total % 60;
-  return `${h}h ${m}m ${s}s`;
-}
-
-function setText(id, value) {
-  const el = document.getElementById(id);
-  if (el) el.textContent = value ?? "-";
-}
-
-function yesNo(value) {
-  return value ? "YES" : "NO";
-}
-
-function showError(message) {
-  const errEl = document.getElementById("dashboardError");
-  if (errEl) errEl.textContent = message || "";
-}
-
-function clearError() {
-  showError("");
-}
-
-function canManageGuild(g) {
-  let perms = 0n;
-  try {
-    perms = BigInt(g.permissions_new || g.permissions || "0");
-  } catch {
-    perms = 0n;
+    return true;
   }
 
-  const isAdmin = (perms & 0x8n) !== 0n;
-  const canManage = (perms & 0x20n) !== 0n;
-  const isOwner = g.owner === true;
+  async function loadDriverStatus() {
+    if (!guildId) {
+      driverStatusCard.innerHTML = `<div class="empty">Missing guildId in URL.</div>`;
+      return;
+    }
 
-  return isOwner || isAdmin || canManage;
-}
+    const { res, data } = await getJson(`/api/eld/driver/status?guildId=${encodeURIComponent(guildId)}`);
+    if (!res.ok || !data?.ok) {
+      driverStatusCard.innerHTML = `<div class="empty">Could not load driver status.</div>`;
+      return;
+    }
 
-async function loadBotServers() {
-  const data = await getJson("/api/vtc/servers");
-  return data.servers || [];
-}
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    const myId = String(me?.discordUserId || "");
+    myDriverStatus =
+      rows.find(x => String(x.discordUserId || "") === myId) ||
+      rows.find(x => String(x.driverName || "").toLowerCase() === String(me?.username || "").toLowerCase()) ||
+      null;
 
-function populateGuilds(botServers, authGuilds) {
-  const sel = document.getElementById("guildSelect");
-  if (!sel) return;
+    if (!myDriverStatus) {
+      driverStatusCard.innerHTML = `<div class="empty">No live driver status found yet for your account.</div>`;
+      dutyStatusValue.textContent = "-";
+      truckValue.textContent = "-";
+      loadValue.textContent = "-";
+      speedValue.textContent = "-";
+      return;
+    }
 
-  sel.innerHTML = "";
+    dutyStatusValue.textContent = myDriverStatus.dutyStatus || "-";
+    truckValue.textContent = myDriverStatus.truck || "-";
+    loadValue.textContent = myDriverStatus.loadNumber || "-";
+    speedValue.textContent = myDriverStatus.speedMph ? `${Number(myDriverStatus.speedMph).toFixed(0)} mph` : "-";
 
-  const authManageableIds = new Set(
-    (authGuilds || [])
-      .filter(g => canManageGuild(g))
-      .map(g => g.id)
-  );
+    driverStatusCard.innerHTML = `
+      <div class="list-item">
+        <strong>${escapeHtml(fmt(myDriverStatus.driverName, me.username || "Driver"))}</strong>
+        <div class="muted">Duty Status: ${escapeHtml(fmt(myDriverStatus.dutyStatus))}</div>
+        <div class="muted">Truck: ${escapeHtml(fmt(myDriverStatus.truck))}</div>
+        <div class="muted">Load Number: ${escapeHtml(fmt(myDriverStatus.loadNumber))}</div>
+        <div class="muted">Location: ${escapeHtml(fmt(myDriverStatus.location))}</div>
+        <div class="muted">Speed: ${myDriverStatus.speedMph ? escapeHtml(Number(myDriverStatus.speedMph).toFixed(0)) + " mph" : "-"}</div>
+        <div class="muted">Last Seen: ${escapeHtml(fmt(myDriverStatus.lastSeenUtc))}</div>
+      </div>
+    `;
 
-  const allowedServers = (botServers || []).filter(s => authManageableIds.has(s.id));
-
-  for (const s of allowedServers) {
-    const opt = document.createElement("option");
-    opt.value = s.id;
-    opt.textContent = s.name;
-    sel.appendChild(opt);
+    renderActiveLoad();
   }
 
-  const urlGuild = qs("guildId");
-  if (urlGuild && allowedServers.some(s => s.id === urlGuild)) {
-    sel.value = urlGuild;
+  function renderActiveLoad() {
+    if (!myDriverStatus) {
+      activeLoadCard.innerHTML = `<div class="empty">No active load found.</div>`;
+      return;
+    }
+
+    if (!myDriverStatus.loadNumber || !String(myDriverStatus.loadNumber).trim()) {
+      activeLoadCard.innerHTML = `<div class="empty">No active load assigned right now.</div>`;
+      return;
+    }
+
+    activeLoadCard.innerHTML = `
+      <div class="list-item">
+        <strong>Load ${escapeHtml(fmt(myDriverStatus.loadNumber))}</strong>
+        <div class="muted">Truck: ${escapeHtml(fmt(myDriverStatus.truck))}</div>
+        <div class="muted">Duty: ${escapeHtml(fmt(myDriverStatus.dutyStatus))}</div>
+        <div class="muted">Location: ${escapeHtml(fmt(myDriverStatus.location))}</div>
+      </div>
+    `;
   }
 
-  if (!sel.value && sel.options.length > 0) {
-    sel.selectedIndex = 0;
-  }
-}
+  async function loadConversation() {
+    if (!guildId || !me?.discordUserId) {
+      conversationList.innerHTML = `<div class="empty">Missing session or guild information.</div>`;
+      return;
+    }
 
-function renderTopDrivers(top) {
-  const el = document.getElementById("leaderboardList");
-  if (!el) return;
-  el.innerHTML = "";
+    const { res, data } = await getJson(
+      `/api/hub/messages/thread?guildId=${encodeURIComponent(guildId)}&discordUserId=${encodeURIComponent(me.discordUserId)}`
+    );
 
-  if (!top || top.length === 0) {
-    el.innerHTML = `<div class="item"><div class="title">No performance data yet</div></div>`;
-    return;
-  }
+    if (!res.ok || !data?.ok) {
+      conversationList.innerHTML = `<div class="empty">Could not load dispatch conversation.</div>`;
+      unreadValue.textContent = "0";
+      return;
+    }
 
-  top.forEach((p, idx) => {
-    const row = document.createElement("div");
-    row.className = "item";
-    row.innerHTML =
-      `<div class="title">#${idx + 1} — ${p.name || "Driver"}</div>` +
-      `<div class="meta">Score: ${Math.round(p.score ?? 0)} | Week Miles: ${Math.round(p.milesWeek ?? 0)} | Loads: ${p.loadsWeek ?? 0}</div>`;
-    el.appendChild(row);
-  });
-}
+    const rows = Array.isArray(data.rows) ? data.rows : [];
+    const unread = rows.filter(x => {
+      const dir = String(x.direction || "").toLowerCase();
+      return (dir === "to_driver" || dir === "outbound" || dir === "dispatch") && !x.isRead;
+    }).length;
 
-function renderPerformance(rows) {
-  const el = document.getElementById("performanceList");
-  if (!el) return;
-  el.innerHTML = "";
+    unreadValue.textContent = String(unread);
 
-  if (!rows || rows.length === 0) {
-    el.innerHTML = `<div class="item"><div class="title">No performance rows yet</div></div>`;
-    return;
-  }
+    if (!rows.length) {
+      conversationList.innerHTML = `<div class="empty">No dispatch messages found yet.</div>`;
+      return;
+    }
 
-  rows.forEach((r, idx) => {
-    const row = document.createElement("div");
-    row.className = "item";
-    row.innerHTML =
-      `<div class="title">#${idx + 1} — ${r.driverName || "Driver"}</div>` +
-      `<div class="meta">Score: ${Math.round(r.score ?? 0)} | Week Miles: ${Math.round(r.milesWeek ?? 0)} | Loads: ${r.loadsWeek ?? 0}</div>`;
-    el.appendChild(row);
-  });
-}
+    conversationList.innerHTML = rows.slice().reverse().map(row => {
+      const direction = String(row.direction || "").toLowerCase();
+      const title =
+        direction === "from_driver" ? "You" :
+        direction === "to_driver" || direction === "outbound" ? "Dispatch" :
+        direction === "system" ? "System" : "Message";
 
-function renderDrivers(drivers) {
-  const body = document.getElementById("driversBody");
-  if (!body) return;
-  body.innerHTML = "";
-
-  if (!drivers || drivers.length === 0) {
-    body.innerHTML = `<tr><td colspan="9">No drivers found</td></tr>`;
-    return;
+      return `
+        <div class="list-item">
+          <strong>${escapeHtml(title)}</strong>
+          <div>${escapeHtml(row.text || "")}</div>
+          <div class="muted" style="margin-top:6px;">
+            ${row.loadNumber ? `Load: ${escapeHtml(row.loadNumber)} • ` : ""}
+            ${escapeHtml(fmt(row.createdUtc, "Recent"))}
+          </div>
+        </div>
+      `;
+    }).join("");
   }
 
-  for (const d of drivers) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${d.name || "-"}</td>
-      <td>${d.role || "driver"}</td>
-      <td>${d.status || "offline"}</td>
-      <td>${d.paired ? "Yes" : "No"}</td>
-      <td>${d.truck || ""}</td>
-      <td>${d.loadNumber || ""}</td>
-      <td>${d.location || ""}</td>
-      <td>${Math.round(d.score ?? 0)}</td>
-      <td>${Math.round(d.weekMiles ?? 0)} / ${d.loads ?? 0}</td>`;
-    body.appendChild(tr);
-  }
-}
+  async function loadAnnouncements() {
+    const { res, data } = await getJson(`/api/announcements?guildId=${encodeURIComponent(guildId)}`);
 
-async function refreshStatus() {
-  const status = await getJson("/api/status");
-  setText("statusText", status.discordReady ? "ONLINE ✅" : "STARTING ⏳");
-  setText("guildCount", status.guilds ?? 0);
-  setText("uptimeText", uptimeText(status.uptimeSeconds ?? 0));
-  setText("buildText", status.version ?? "-");
-}
+    if (!res.ok || !data?.ok) {
+      announcementList.innerHTML = `<div class="empty">Could not load announcements.</div>`;
+      return;
+    }
 
-async function loadSummary() {
-  const data = await getJson(apiUrl("/api/dashboard/summary"));
-  setText("vtcName", data.vtcName || "-");
-  setText("driversTotal", data.driversTotal ?? 0);
-  setText("driversOnline", data.driversOnline ?? 0);
-  setText("pairedDrivers", data.pairedDrivers ?? 0);
-  setText("dispatchReady", yesNo(data.dispatchReady));
-  setText("announcementsReady", yesNo(data.announcementsReady));
-  renderTopDrivers(data.topDrivers || []);
-}
+    const rows = Array.isArray(data.data) ? data.data : [];
+    if (!rows.length) {
+      announcementList.innerHTML = `<div class="empty">No announcements yet.</div>`;
+      return;
+    }
 
-async function loadDrivers() {
-  const data = await getJson(apiUrl("/api/dashboard/drivers"));
-  renderDrivers(data.drivers || []);
-}
-
-async function loadPerformance() {
-  const data = await getJson(apiUrl("/api/dashboard/performance?take=10"));
-  renderPerformance(data.rows || []);
-}
-
-async function loadSettings() {
-  const data = await getJson(apiUrl("/api/dashboard/settings"));
-  const s = data.settings || {};
-
-  const dispatchChannelId = document.getElementById("dispatchChannelId");
-  const dispatchWebhookUrl = document.getElementById("dispatchWebhookUrl");
-  const announcementChannelId = document.getElementById("announcementChannelId");
-  const announcementWebhookUrl = document.getElementById("announcementWebhookUrl");
-
-  if (dispatchChannelId) dispatchChannelId.value = s.dispatchChannelId || "";
-  if (dispatchWebhookUrl) dispatchWebhookUrl.value = s.dispatchWebhookUrl || "";
-  if (announcementChannelId) announcementChannelId.value = s.announcementChannelId || "";
-  if (announcementWebhookUrl) announcementWebhookUrl.value = s.announcementWebhookUrl || "";
-}
-
-async function saveSettings() {
-  const payload = {
-    guildId: currentGuildId(),
-    dispatchChannelId: document.getElementById("dispatchChannelId")?.value.trim() || "",
-    dispatchWebhookUrl: document.getElementById("dispatchWebhookUrl")?.value.trim() || "",
-    announcementChannelId: document.getElementById("announcementChannelId")?.value.trim() || "",
-    announcementWebhookUrl: document.getElementById("announcementWebhookUrl")?.value.trim() || ""
-  };
-
-  const data = await getJson("/api/dashboard/settings", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
-  });
-
-  if (!data.ok) throw new Error(data.error || "Failed to save settings");
-  await loadSummary();
-  await loadSettings();
-  alert("Settings saved.");
-}
-
-async function loadDashboard() {
-  clearError();
-
-  if (!currentGuildId()) {
-    showError("No Discord server selected.");
-    return;
+    announcementList.innerHTML = rows.slice(0, 8).map(a => `
+      <div class="list-item">
+        <strong>${escapeHtml(a.title || "Announcement")}</strong>
+        <div>${escapeHtml(a.body || "")}</div>
+        <div class="muted" style="margin-top:6px;">${escapeHtml(a.sentUtc || a.createdUtc || "")}</div>
+      </div>
+    `).join("");
   }
 
-  const errors = [];
+  async function loadMapSummary() {
+    const { res, data } = await getJson(`/api/map/live?guildId=${encodeURIComponent(guildId)}`);
 
-  await Promise.all([
-    loadSummary().catch(err => errors.push(`Summary: ${err.message || err}`)),
-    loadDrivers().catch(err => errors.push(`Drivers: ${err.message || err}`)),
-    loadPerformance().catch(err => errors.push(`Performance: ${err.message || err}`)),
-    loadSettings().catch(err => errors.push(`Settings: ${err.message || err}`))
-  ]);
+    if (!res.ok || !data?.ok) {
+      mapCard.innerHTML = `<div class="empty">Could not load map summary.</div>`;
+      return;
+    }
 
-  if (errors.length > 0) {
-    showError(errors.join(" | "));
+    const points = Array.isArray(data.points) ? data.points : [];
+    const myId = String(me?.discordUserId || "");
+    const mine = points.find(x => String(x.discordUserId || "") === myId) || null;
+
+    if (!mine) {
+      mapCard.innerHTML = `<div class="empty">No map point available for your truck yet.</div>`;
+      return;
+    }
+
+    mapCard.innerHTML = `
+      <div class="list-item">
+        <strong>${escapeHtml(fmt(mine.driverName, "Driver"))}</strong>
+        <div class="muted">Location: ${escapeHtml(fmt(mine.location))}</div>
+        <div class="muted">Latitude: ${escapeHtml(fmt(mine.latitude, "0"))}</div>
+        <div class="muted">Longitude: ${escapeHtml(fmt(mine.longitude, "0"))}</div>
+        <div class="muted">Heading: ${escapeHtml(fmt(mine.heading, "0"))}</div>
+        <div class="muted">Speed: ${mine.speedMph ? escapeHtml(Number(mine.speedMph).toFixed(0)) + " mph" : "-"}</div>
+      </div>
+    `;
   }
-}
 
-window.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const auth = await checkAuth();
-    if (!auth) return;
+  async function loadAwards() {
+    if (!guildId || !me?.discordUserId) {
+      awardsList.innerHTML = `<div class="empty">Missing session or guild information.</div>`;
+      return;
+    }
 
-    await refreshStatus();
+    const { res, data } = await getJson(
+      `/api/vtc/awards/driver?guildId=${encodeURIComponent(guildId)}&driverId=${encodeURIComponent(me.discordUserId)}`
+    );
 
-    const botServers = await loadBotServers();
-    populateGuilds(botServers, auth.guilds || []);
+    if (!res.ok || !data?.ok) {
+      awardsList.innerHTML = `<div class="empty">No awards available yet.</div>`;
+      return;
+    }
 
-    await loadDashboard();
-  } catch (err) {
-    console.error(err);
-    showError(`Dashboard error: ${err.message || err}`);
+    const rows = Array.isArray(data.awards) ? data.awards : [];
+    if (!rows.length) {
+      awardsList.innerHTML = `<div class="empty">No awards assigned yet.</div>`;
+      return;
+    }
+
+    awardsList.innerHTML = rows.slice(0, 8).map(row => {
+      const award = row.award || {};
+      return `
+        <div class="list-item">
+          <strong>${escapeHtml(award.iconEmoji || "🏆")} ${escapeHtml(award.name || "Award")}</strong>
+          <div>${escapeHtml(award.description || row.note || "")}</div>
+          <div class="muted" style="margin-top:6px;">
+            Awarded: ${escapeHtml(fmt(row.awardedUtc, ""))}
+            ${row.awardedByUsername ? ` • By: ${escapeHtml(row.awardedByUsername)}` : ""}
+          </div>
+        </div>
+      `;
+    }).join("");
   }
-});
 
-document.getElementById("refreshBtn")?.addEventListener("click", async () => {
-  await refreshStatus();
-  await loadDashboard();
-});
-
-document.getElementById("saveSettingsBtn")?.addEventListener("click", async () => {
-  try {
-    await saveSettings();
-  } catch (err) {
-    alert(`Save failed: ${err.message || err}`);
+  async function logout() {
+    try {
+      await fetch("/logout", {
+        method: "POST",
+        credentials: "include"
+      });
+    } catch {
+    }
+    window.location.href = "/index.html";
   }
-});
 
-document.getElementById("guildSelect")?.addEventListener("change", async () => {
-  const u = new URL(window.location.href);
-  if (currentGuildId()) u.searchParams.set("guildId", currentGuildId());
-  window.history.replaceState({}, "", u.toString());
-  await loadDashboard();
-});
+  async function refreshAll() {
+    refreshBtn.disabled = true;
+    refreshBtn.textContent = "Refreshing...";
+    try {
+      const ok = await loadMe();
+      if (!ok) return;
 
-setInterval(refreshStatus, 15000);
+      await Promise.all([
+        loadDriverStatus(),
+        loadConversation(),
+        loadAnnouncements(),
+        loadMapSummary(),
+        loadAwards()
+      ]);
+    } finally {
+      refreshBtn.disabled = false;
+      refreshBtn.textContent = "Refresh";
+    }
+  }
+
+  refreshBtn.addEventListener("click", refreshAll);
+  logoutBtn.addEventListener("click", logout);
+
+  await refreshAll();
+})();

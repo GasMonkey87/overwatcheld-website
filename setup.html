@@ -1,3 +1,188 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OverWatch Loads</title><style>body{margin:0;background:#020617;color:#f8fafc;font-family:Segoe UI,Arial}.wrap{padding:24px;max-width:1200px;margin:auto}.top{display:flex;justify-content:space-between}.nav a{color:#bfdbfe;text-decoration:none;margin-left:10px}.card{background:#0f172a;border:1px solid #334155;border-radius:18px;padding:16px;margin-top:14px}.muted{color:#94a3b8}.row{display:grid;grid-template-columns:1.2fr 1.2fr .9fr .7fr;gap:10px;border-top:1px solid #334155;padding:12px 0}@media(max-width:800px){.row{grid-template-columns:1fr}}</style></head><body><div class="wrap"><div class="top"><div><h1>Loads</h1><div class="muted">Active ATS load telemetry + dispatch context</div></div><div class="nav"><a id="map">Live Map</a><a id="fleet">Fleet</a><a id="convoy">Convoy</a><a id="garages">Garages</a></div></div><div id="content" class="card"></div></div><script>
-const qs=new URLSearchParams(location.search);const guildId=qs.get('guildId')||localStorage.getItem('oweld.guildId')||'';if(guildId)localStorage.setItem('oweld.guildId',guildId);['map','fleet','convoy','garages'].forEach(id=>document.getElementById(id).href=`/${id==='map'?'live-map':id}.html?guildId=${encodeURIComponent(guildId)}`);function esc(v){return String(v??'').replace(/[&<>"']/g,s=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[s]))}async function boot(){const r=await fetch(`/api/map/live?guildId=${encodeURIComponent(guildId)}`,{credentials:'include'});const d=await r.json();const pts=(d.points||[]).filter(p=>p.sourceCity||p.destinationCity||p.sourceCompany||p.destinationCompany||p.cargo||p.loadNumber);content.innerHTML=`<h2>Active Loads</h2>${pts.length?`<div class="row muted"><b>Driver / Truck</b><b>Pickup → Delivery</b><b>Cargo / Load</b><b>Status</b></div>`+pts.map(p=>`<div class="row"><div><b>${esc(p.driverName||'Driver')}</b><br><span class="muted">${esc(p.truck||'Truck')}</span></div><div>${esc(p.sourceCompany||'-')} ${esc(p.sourceCity||'')}<br><span class="muted">to ${esc(p.destinationCompany||'-')} ${esc(p.destinationCity||'')}</span></div><div>${esc(p.cargo||'-')}<br><span class="muted">${esc(p.loadNumber||'')}</span></div><div>${esc(p.dutyStatus||'Live')}<br><span class="muted">${Math.round(Number(p.speedMph||0))} mph</span></div></div>`).join(''):'<div class="muted">No active ATS load telemetry. Start or accept an ATS job and make sure ELD is posting telemetry.</div>'}`}
-boot();setInterval(boot,7000)</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OverWatch ELD | ATS Fleet Operations System</title>
+  <meta name="description" content="OverWatch ELD is an ATS simulator fleet operations system with driver logs, dispatch, BOL paperwork, live map, maintenance, DVIRs, and VTC management tools.">
+  <meta property="og:title" content="OverWatch ELD">
+  <meta property="og:description" content="A professional ELD-style fleet operations system for American Truck Simulator VTCs.">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="assets/styles.css?v=homepage-ats-eld-v2">
+  <link rel="stylesheet" href="assets/homepage.css?v=homepage-ats-eld-v2">
+</head>
+<body class="home-page">
+  <header class="header">
+    <nav class="nav">
+      <a class="brand" href="./" aria-label="OverWatch ELD home"><span class="brand-mark">OW</span><span>OverWatch ELD</span></a>
+      <div class="nav-links">
+        <a href="features/">Features</a>
+        <a href="downloads/">Downloads</a>
+        <a href="live-map/">Live Map</a>
+        <a href="dashboard/">Dashboard</a>
+        <a href="maintenance/">Maintenance</a>
+        <a href="portal/">Portal</a>
+        <a href="support/">Support</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero home-hero">
+      <div class="wrap home-hero-grid">
+        <div class="hero-copy">
+          <div class="logo-lockup" aria-label="OverWatch ELD and ATS Simulator">
+            <img src="assets/overwatch-eld-logo.svg" alt="OverWatch ELD logo">
+            <span class="lockup-plus">+</span>
+            <img src="assets/ats-simulator-logo.svg" alt="ATS Simulator badge">
+          </div>
+          <div class="kicker">ATS / VTC Fleet Operations</div>
+          <h1>ELD-style tracking that feels real without pretending to be fake trucking software.</h1>
+          <p class="lead">OverWatch ELD turns American Truck Simulator sessions into clean fleet data: duty status, drive time, active loads, dispatch, BOLs, inspections, maintenance, live map positions, and company records for your VTC.</p>
+          <div class="hero-badges" aria-label="System highlights">
+            <span>ATS telemetry</span>
+            <span>Driver logs</span>
+            <span>Dispatch board</span>
+            <span>VTC management</span>
+          </div>
+          <div class="actions">
+            <a class="btn" href="downloads/">Download ELD</a>
+            <a class="btn secondary" href="portal/">Open Driver Portal</a>
+            <a class="btn secondary" href="live-map/">View Live Map</a>
+          </div>
+        </div>
+
+        <div class="hero-console" aria-label="ELD dashboard preview">
+          <div class="console-topbar">
+            <span class="console-dot online"></span>
+            <span>Unit OW-389 • Connected to ATS</span>
+            <strong>LIVE</strong>
+          </div>
+          <div class="console-driver">
+            <div>
+              <span class="small-label">Current Driver</span>
+              <strong>J. Bowers</strong>
+              <p>Peterbilt 389 • Trailer 53 ft Dry Van</p>
+            </div>
+            <div class="status-pill driving">Driving</div>
+          </div>
+          <div class="eld-clock-grid">
+            <div><span>Drive Left</span><strong>08:42</strong></div>
+            <div><span>Shift Left</span><strong>10:18</strong></div>
+            <div><span>Cycle Left</span><strong>62:35</strong></div>
+            <div><span>Break Due</span><strong>03:12</strong></div>
+          </div>
+          <div class="load-card-mini">
+            <div>
+              <span class="small-label">Active Load</span>
+              <strong>Kenworth Parts</strong>
+              <p>Jacksonville, FL → Dallas, TX • 1,037 mi</p>
+            </div>
+            <span class="status-pill">On Schedule</span>
+          </div>
+          <img class="console-map" src="assets/ats-route-map.svg" alt="ATS route map preview from Jacksonville to Dallas">
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap real-data-section">
+      <div class="section-title-row">
+        <div>
+          <div class="kicker">What the ELD shows</div>
+          <h2>Real operational data for simulator fleets</h2>
+        </div>
+        <p class="lead">No fake corporate fluff. These are the actual types of records a working ATS ELD-style system should surface for drivers and company staff.</p>
+      </div>
+      <div class="data-grid">
+        <div class="data-card"><span>Duty Status</span><strong>Driving / On Duty / Sleeper / Off Duty</strong><p>Tracks the driver’s current work state and log history for each session.</p></div>
+        <div class="data-card"><span>Truck Data</span><strong>Speed, fuel, odometer, engine state</strong><p>Reads simulator telemetry so fleet data is based on the truck, not manual guesses.</p></div>
+        <div class="data-card"><span>Load Record</span><strong>Cargo, origin, destination, mileage</strong><p>Keeps each run tied to a dispatch, BOL, driver, truck, trailer, and route.</p></div>
+        <div class="data-card"><span>Safety</span><strong>DVIR, defects, maintenance tickets</strong><p>Lets drivers report issues and gives managers a repair trail by vehicle.</p></div>
+      </div>
+    </section>
+
+    <section class="section-alt screenshot-section">
+      <div class="wrap two-column-showcase">
+        <div>
+          <div class="kicker">Command Center</div>
+          <h2>A clean dashboard for drivers, dispatchers, and owners.</h2>
+          <p class="lead">The homepage now presents OverWatch ELD as an ATS operations platform, not a generic trucking landing page. It highlights what users actually care about: logs, loads, live positions, truck condition, documents, and company workflow.</p>
+          <div class="feature-list">
+            <div><b>01</b><span>Live driver card with duty status and available hours.</span></div>
+            <div><b>02</b><span>Dispatch details with route, cargo, mileage, and delivery state.</span></div>
+            <div><b>03</b><span>Fleet maintenance status with defects and out-of-service flags.</span></div>
+            <div><b>04</b><span>Portal links for drivers, staff, live map, downloads, and support.</span></div>
+          </div>
+        </div>
+        <img class="dashboard-art" src="assets/eld-dashboard-preview.svg" alt="OverWatch ELD dashboard preview with driver logs, load, and fleet status">
+      </div>
+    </section>
+
+    <section class="wrap">
+      <div class="section-title-row">
+        <div>
+          <div class="kicker">Features</div>
+          <h2>Built around how ATS VTCs actually operate</h2>
+        </div>
+      </div>
+      <div class="grid feature-card-grid">
+        <div class="card pro-card"><h3>Driver ELD Client</h3><p>Connects to ATS telemetry and records driver activity, location, trip data, truck status, and active load information.</p></div>
+        <div class="card pro-card"><h3>HOS-Style Logs</h3><p>Shows familiar ELD-style clocks such as drive time, shift time, cycle time, break timing, and duty status changes.</p></div>
+        <div class="card pro-card"><h3>Dispatch & Load Board</h3><p>Staff can create loads, assign drivers, track progress, and keep completed jobs in company history.</p></div>
+        <div class="card pro-card"><h3>BOL Paperwork</h3><p>Creates Bill of Lading-style records with carrier, driver, truck, trailer, cargo, route, pickup, and delivery data.</p></div>
+        <div class="card pro-card"><h3>DVIR & Maintenance</h3><p>Drivers can report defects while managers track repairs, maintenance notes, service state, and vehicle readiness.</p></div>
+        <div class="card pro-card"><h3>Live Map</h3><p>Shows fleet movement, driver status, truck location, current trip, and active routes for staff and community operations.</p></div>
+      </div>
+    </section>
+
+    <section class="section-alt operations-strip">
+      <div class="wrap ops-grid">
+        <div class="ops-panel">
+          <span class="small-label">Sample active fleet board</span>
+          <table class="ops-table">
+            <thead><tr><th>Unit</th><th>Driver</th><th>Status</th><th>Load</th></tr></thead>
+            <tbody>
+              <tr><td>OW-389</td><td>J. Bowers</td><td><span class="good">Driving</span></td><td>Jacksonville → Dallas</td></tr>
+              <tr><td>OW-579</td><td>M. Carter</td><td><span class="warn">Fuel Stop</span></td><td>Denver → Phoenix</td></tr>
+              <tr><td>OW-204</td><td>A. Reyes</td><td><span class="good">On Duty</span></td><td>Spokane → Reno</td></tr>
+              <tr><td>OW-117</td><td>K. Miller</td><td><span class="bad">Shop</span></td><td>Maintenance hold</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ops-copy">
+          <div class="kicker">ATS themed, professional presentation</div>
+          <h2>Simulator-first, but organized like a real fleet system.</h2>
+          <p class="lead">The design keeps the OverWatch dark command-center look, adds an ATS badge, and uses believable ELD fields instead of vague marketing claims.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap role-section">
+      <div class="section-title-row">
+        <div>
+          <div class="kicker">User Roles</div>
+          <h2>One system for every person in the VTC</h2>
+        </div>
+      </div>
+      <div class="role-grid">
+        <article class="role-card"><h3>Drivers</h3><ul><li>Start and end trips</li><li>Track ELD-style clocks</li><li>Complete DVIRs</li><li>Upload or generate BOL records</li></ul></article>
+        <article class="role-card"><h3>Dispatchers</h3><ul><li>Create and assign loads</li><li>Watch active routes</li><li>Review delivery progress</li><li>Send company work to drivers</li></ul></article>
+        <article class="role-card"><h3>Managers</h3><ul><li>Manage trucks and drivers</li><li>Review fleet performance</li><li>Track maintenance</li><li>Operate the VTC portal</li></ul></article>
+      </div>
+    </section>
+
+    <section class="cta-band">
+      <div class="wrap cta-wrap">
+        <div>
+          <div class="kicker">OverWatch ELD</div>
+          <h2>The ELD you can count on for ATS fleet ops.</h2>
+          <p class="lead">Download the client, connect ATS, and run your VTC with logs, dispatch, live map, maintenance, documents, and driver records.</p>
+        </div>
+        <div class="actions"><a class="btn" href="downloads/">Download ELD</a><a class="btn secondary" href="support/">Get Support</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="wrap"><span>OverWatch ELD © 2026 Gas Monkey Creations</span><span>ATS simulator fleet operations system.</span></div></footer>
+</body>
+</html>

@@ -1,74 +1,31 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OverWatch ELD | Log Exports</title>
-  <link rel="stylesheet" href="/site.css" />
-  <link rel="stylesheet" href="/index.css" />
-  <style>
-    body { background:#08111f; color:#eaf1ff; font-family:system-ui,Segoe UI,Arial,sans-serif; }
-    .wrap { max-width:1180px; margin:0 auto; padding:32px 18px 56px; }
-    .hero { display:flex; justify-content:space-between; gap:18px; align-items:flex-end; margin-bottom:20px; }
-    .hero h1 { margin:0; font-size:clamp(28px,4vw,46px); }
-    .hero p { color:#9fb2d3; max-width:760px; }
-    .toolbar { display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 22px; }
-    input,button { border-radius:12px; border:1px solid rgba(255,255,255,.16); padding:11px 13px; background:#0f1b2f; color:#eaf1ff; }
-    button { cursor:pointer; background:#1976ff; border-color:#1976ff; font-weight:700; }
-    .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px; margin:18px 0; }
-    .card,.panel { background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.035)); border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:16px; box-shadow:0 16px 40px rgba(0,0,0,.25); }
-    .card b { display:block; font-size:12px; color:#9fb2d3; text-transform:uppercase; letter-spacing:.08em; }
-    .card span { display:block; margin-top:6px; font-size:24px; font-weight:800; }
-    table { width:100%; border-collapse:collapse; overflow:hidden; border-radius:14px; }
-    th,td { padding:12px 10px; border-bottom:1px solid rgba(255,255,255,.09); text-align:left; vertical-align:top; }
-    th { color:#9fb2d3; font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
-    .pill { display:inline-flex; border-radius:999px; padding:4px 9px; background:rgba(25,118,255,.18); color:#bcd6ff; font-size:12px; font-weight:700; }
-    .ok { background:rgba(47,201,120,.18); color:#a9f6c8; }
-    .warn { background:rgba(255,193,7,.18); color:#ffe59c; }
-    .muted { color:#9fb2d3; }
-    a { color:#8fbaff; }
-  </style>
-</head>
-<body>
-  <main class="wrap">
-    <section class="hero">
-      <div>
-        <h1>DOT log exports</h1>
-        <p>Review recent ELD log exports sent from the desktop app to Discord, including identity lock data, certification status, violations, and whether the FMCSA graph image was attached.</p>
-      </div>
-      <a href="/dashboard.html">Back to dashboard</a>
-    </section>
+https://www.overwatcheld.com/* https://overwatcheld.com/:splat 301!
+http://www.overwatcheld.com/* https://overwatcheld.com/:splat 301!
+http://overwatcheld.com/* https://overwatcheld.com/:splat 301!
 
-    <section class="toolbar">
-      <input id="guildId" placeholder="Discord guild ID" />
-      <button id="loadBtn">Load exports</button>
-      <button id="clearBtn" type="button">Clear saved guild</button>
-    </section>
+/                  /index.html               200
+/features          /features/index.html      200
+/features/         /features/index.html      200
+/downloads         /downloads/index.html     200
+/downloads/        /downloads/index.html     200
+/live-map          /live-map/index.html      200
+/live-map/         /live-map/index.html      200
+/dashboard         /dashboard/index.html     200
+/dashboard/        /dashboard/index.html     200
+/maintenance       /maintenance/index.html   200
+/maintenance/      /maintenance/index.html   200
+/vtc               /vtc/index.html           200
+/vtc/              /vtc/index.html           200
+/portal            /portal/index.html        200
+/portal/           /portal/index.html        200
+/select-vtc        /select-vtc/index.html    200
+/select-vtc/       /select-vtc/index.html    200
+/login             /login/index.html         200
+/login/            /login/index.html         200
+/support           /support/index.html       200
+/support/          /support/index.html       200
+/profile           /profile/index.html       200
+/profile/          /profile/index.html       200
+/log-exports /log-exports.html 200
+/logs /log-exports.html 200
 
-    <section class="cards">
-      <div class="card"><b>Total exports</b><span id="totalCount">—</span></div>
-      <div class="card"><b>With graph</b><span id="graphCount">—</span></div>
-      <div class="card"><b>Certified</b><span id="certifiedCount">—</span></div>
-    </section>
-
-    <section class="panel">
-      <table>
-        <thead>
-          <tr>
-            <th>When</th>
-            <th>Driver</th>
-            <th>Date range</th>
-            <th>Truck</th>
-            <th>Status</th>
-            <th>Violations</th>
-          </tr>
-        </thead>
-        <tbody id="rows">
-          <tr><td colspan="6" class="muted">Enter a guild ID and load exports.</td></tr>
-        </tbody>
-      </table>
-    </section>
-  </main>
-  <script src="/log-exports.js"></script>
-</body>
-</html>
+/*                 /404.html                 404

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 640" role="img" aria-label="OverWatch ELD portal preview">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#101827"/><stop offset=".55" stop-color="#07111f"/><stop offset="1" stop-color="#030711"/></linearGradient>
+    <linearGradient id="gold" x1="0" x2="1"><stop stop-color="#f8d56b"/><stop offset="1" stop-color="#c98b1b"/></linearGradient>
+    <linearGradient id="blue" x1="0" x2="1"><stop stop-color="#38bdf8"/><stop offset="1" stop-color="#2563eb"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="22" stdDeviation="22" flood-color="#000" flood-opacity=".45"/></filter>
+  </defs>
+  <rect width="980" height="640" rx="36" fill="url(#bg)"/>
+  <path d="M0 96h980" stroke="#1e293b" stroke-width="2"/>
+  <circle cx="54" cy="48" r="10" fill="#ef4444"/><circle cx="88" cy="48" r="10" fill="#f59e0b"/><circle cx="122" cy="48" r="10" fill="#22c55e"/>
+  <text x="168" y="57" fill="#dbeafe" font-size="24" font-weight="800" font-family="Segoe UI, Arial">OverWatch ELD Driver Portal</text>
+  <rect x="34" y="126" width="266" height="478" rx="28" fill="#08111d" stroke="#22314a"/>
+  <text x="62" y="172" fill="#f8d56b" font-size="18" font-weight="900" font-family="Segoe UI, Arial">ATS VTC STATUS</text>
+  <rect x="62" y="204" width="198" height="14" rx="7" fill="#1e293b"/><rect x="62" y="204" width="146" height="14" rx="7" fill="url(#gold)"/>
+  <text x="62" y="260" fill="#f8fafc" font-size="44" font-weight="900" font-family="Segoe UI, Arial">07:42</text>
+  <text x="62" y="292" fill="#93a4bb" font-size="17" font-family="Segoe UI, Arial">Drive time remaining</text>
+  <rect x="62" y="326" width="198" height="72" rx="18" fill="#0f1a2a" stroke="#24324a"/>
+  <text x="82" y="356" fill="#93a4bb" font-size="14" font-weight="800" font-family="Segoe UI, Arial">DUTY STATUS</text>
+  <text x="82" y="383" fill="#4ade80" font-size="22" font-weight="900" font-family="Segoe UI, Arial">DRIVING</text>
+  <rect x="62" y="420" width="198" height="72" rx="18" fill="#0f1a2a" stroke="#24324a"/>
+  <text x="82" y="450" fill="#93a4bb" font-size="14" font-weight="800" font-family="Segoe UI, Arial">LAST DVIR</text>
+  <text x="82" y="477" fill="#f8fafc" font-size="21" font-weight="900" font-family="Segoe UI, Arial">No defects</text>
+  <rect x="326" y="126" width="616" height="184" rx="28" fill="#08111d" stroke="#22314a" filter="url(#shadow)"/>
+  <text x="360" y="172" fill="#f8fafc" font-size="28" font-weight="900" font-family="Segoe UI, Arial">Driver workday snapshot</text>
+  <text x="360" y="204" fill="#93a4bb" font-size="17" font-family="Segoe UI, Arial">Freightliner Cascadia • Truck 389 • I-40 near Albuquerque, NM</text>
+  <g font-family="Segoe UI, Arial" font-weight="900">
+    <rect x="360" y="238" width="126" height="44" rx="22" fill="#102238" stroke="#28466e"/><text x="382" y="267" fill="#7dd3fc" font-size="16">GPS LOCK</text>
+    <rect x="506" y="238" width="134" height="44" rx="22" fill="#102615" stroke="#2d6d3b"/><text x="530" y="267" fill="#86efac" font-size="16">SYNCED</text>
+    <rect x="660" y="238" width="168" height="44" rx="22" fill="#2a1d0a" stroke="#6c4b15"/><text x="687" y="267" fill="#facc15" font-size="16">ATS ROUTE</text>
+  </g>
+  <rect x="326" y="336" width="292" height="268" rx="28" fill="#08111d" stroke="#22314a"/>
+  <text x="360" y="382" fill="#f8fafc" font-size="24" font-weight="900" font-family="Segoe UI, Arial">Current load</text>
+  <path d="M378 438 C430 394 478 480 536 426" stroke="url(#blue)" stroke-width="9" fill="none" stroke-linecap="round"/>
+  <circle cx="378" cy="438" r="12" fill="#38bdf8"/><circle cx="536" cy="426" r="12" fill="#f8d56b"/>
+  <text x="360" y="504" fill="#93a4bb" font-size="15" font-family="Segoe UI, Arial">Origin</text>
+  <text x="360" y="532" fill="#f8fafc" font-size="22" font-weight="900" font-family="Segoe UI, Arial">Phoenix, AZ</text>
+  <text x="360" y="568" fill="#93a4bb" font-size="15" font-family="Segoe UI, Arial">Destination: Amarillo, TX • 587 mi</text>
+  <rect x="650" y="336" width="292" height="268" rx="28" fill="#08111d" stroke="#22314a"/>
+  <text x="684" y="382" fill="#f8fafc" font-size="24" font-weight="900" font-family="Segoe UI, Arial">Compliance feed</text>
+  <g font-family="Segoe UI, Arial">
+    <circle cx="696" cy="430" r="7" fill="#22c55e"/><text x="716" y="436" fill="#dbeafe" font-size="18">Log graph updated</text>
+    <circle cx="696" cy="482" r="7" fill="#22c55e"/><text x="716" y="488" fill="#dbeafe" font-size="18">BOL image received</text>
+    <circle cx="696" cy="534" r="7" fill="#facc15"/><text x="716" y="540" fill="#dbeafe" font-size="18">Fuel stop pending review</text>
+  </g>
+</svg>

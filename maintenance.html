@@ -1,6 +1,76 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Maintenance | OverWatch ELD</title><link rel="stylesheet" href="assets/styles.css"></head><body>
-<header class="header"><nav class="nav"><a class="brand" href="index.html"><span class="brand-mark">OW</span><span>OverWatch ELD</span></a><div class="nav-links"><a href="features.html">Features</a><a href="downloads.html">Downloads</a><a href="live-map.html">Live Map</a><a href="dashboard.html">Dashboard</a><a href="maintenance.html">Maintenance</a><a href="support.html">Support</a></div></nav></header>
-<main><section class="wrap"><div class="kicker">Fleet Maintenance</div><h1>Keep trucks safe and road ready.</h1><p class="lead">OverWatch ELD turns defects, malfunctions, inspections, and driver reports into trackable maintenance tickets.</p><div class="grid"><div class="card"><h3>Maintenance Requests</h3><p>Drivers can request repairs from the ELD and send details to your Discord maintenance channel.</p></div><div class="card"><h3>Inspection Defects</h3><p>Failed pre-trip, post-trip, and vehicle inspections can create repair tickets automatically.</p></div><div class="card"><h3>Fleet History</h3><p>Track service due, malfunction history, DOT inspection needs, damage repair, and out-of-service status.</p></div></div><section class="section-alt" style="margin-top:28px;border-radius:18px"><div class="wrap" style="padding:28px"><h2>Ticket fields</h2><table class="table"><tr><th>Field</th><th>Purpose</th></tr><tr><td>Truck / Unit</td><td>Locks the issue to a specific fleet truck.</td></tr><tr><td>Driver</td><td>Shows who reported the issue.</td></tr><tr><td>Location</td><td>Helps mechanics find where the repair happened.</td></tr><tr><td>Severity</td><td>Flags normal, urgent, or out-of-service issues.</td></tr></table></div></section></section></main>
-<footer class="footer"><div class="wrap"><span>OverWatch ELD © 2026 Gas Monkey Creations</span><span>The ELD you can count on.</span></div></footer>
-</body></html>
+/* OverWatch ELD shared live API helper */
+(function () {
+  const DEFAULT_API_BASE = "https://overwatcheld.up.railway.app";
+  const cfg = window.OW_CONFIG || {};
+  const API_BASE = (cfg.apiBase || localStorage.getItem("owApiBase") || DEFAULT_API_BASE).replace(/\/$/, "");
+
+  function qs(name) {
+    return new URLSearchParams(window.location.search).get(name) || "";
+  }
+
+  function guildId() {
+    return (qs("guildId") || localStorage.getItem("owGuildId") || "").trim();
+  }
+
+  function setGuildId(value) {
+    const v = String(value || "").trim();
+    if (v) localStorage.setItem("owGuildId", v);
+  }
+
+  function apiUrl(path, params) {
+    const url = new URL(path, API_BASE);
+    const gid = guildId();
+    if (gid && !url.searchParams.has("guildId")) url.searchParams.set("guildId", gid);
+    if (params) {
+      for (const [k, v] of Object.entries(params)) {
+        if (v !== undefined && v !== null && String(v) !== "") url.searchParams.set(k, v);
+      }
+    }
+    return url.toString();
+  }
+
+  async function request(path, options) {
+    const res = await fetch(apiUrl(path), {
+      credentials: "include",
+      headers: { "Accept": "application/json", ...(options && options.body ? { "Content-Type": "application/json" } : {}) },
+      ...options
+    });
+    const text = await res.text();
+    let data = {};
+    try { data = text ? JSON.parse(text) : {}; } catch { data = { raw: text }; }
+    if (!res.ok) throw new Error(data.error || data.message || data.title || data.detail || `HTTP ${res.status}`);
+    return data;
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function pick(obj, keys, fallback = "-") {
+    for (const key of keys) {
+      const val = key.split('.').reduce((x, part) => x && x[part], obj);
+      if (val !== undefined && val !== null && String(val).trim() !== "") return val;
+    }
+    return fallback;
+  }
+
+  function rows(data) {
+    if (Array.isArray(data)) return data;
+    return data.rows || data.data || data.items || data.loads || data.points || data.servers || data.awards || [];
+  }
+
+  async function best(paths) {
+    let last;
+    for (const p of paths) {
+      try { return { path: p, data: await request(p) }; } catch (err) { last = err; }
+    }
+    throw last || new Error("No API path worked");
+  }
+
+  window.OW = { API_BASE, qs, guildId, setGuildId, apiUrl, request, escapeHtml, pick, rows, best };
+})();

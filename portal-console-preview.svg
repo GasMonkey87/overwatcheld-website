@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="310" viewBox="0 0 820 310" role="img" aria-labelledby="title desc">
+<title id="title">Route map preview</title><desc id="desc">Stylized ATS route map from Jacksonville to Dallas</desc>
+<defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#07111b"/><stop offset="1" stop-color="#13243a"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+<rect width="820" height="310" rx="22" fill="url(#bg)"/>
+<g opacity=".18" stroke="#dbe6f5" stroke-width="1"><path d="M0 55h820M0 110h820M0 165h820M0 220h820M0 275h820M70 0v310M140 0v310M210 0v310M280 0v310M350 0v310M420 0v310M490 0v310M560 0v310M630 0v310M700 0v310M770 0v310"/></g>
+<path d="M705 216 C630 194 590 162 535 160 C470 158 430 116 374 122 C302 130 268 199 198 184 C155 175 125 154 91 139" fill="none" stroke="#5ad8ff" stroke-width="7" stroke-linecap="round" stroke-dasharray="14 12" filter="url(#glow)"/>
+<g font-family="Arial,Helvetica,sans-serif" font-weight="800"><circle cx="705" cy="216" r="13" fill="#f5c542" stroke="#111" stroke-width="4"/><text x="666" y="254" fill="#fff" font-size="18">Jacksonville</text><circle cx="91" cy="139" r="13" fill="#49d17d" stroke="#111" stroke-width="4"/><text x="55" y="120" fill="#fff" font-size="18">Dallas</text><circle cx="374" cy="122" r="9" fill="#5ad8ff"/><text x="350" y="97" fill="#cbd8e8" font-size="15">I-10 / I-20</text></g>
+<rect x="22" y="22" width="205" height="70" rx="16" fill="rgba(5,8,13,.72)" stroke="#26364a"/><text x="40" y="51" fill="#92a0b2" font-family="Arial" font-size="13" font-weight="900">ACTIVE ROUTE</text><text x="40" y="76" fill="#fff" font-family="Arial" font-size="21" font-weight="900">1,037 mi • ETA 14h 20m</text>
+</svg>
