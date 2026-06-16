@@ -1,150 +1,19 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Driver Portal | OverWatch ELD</title>
-  <link rel="stylesheet" href="../assets/styles.css?v=ow-base">
-  <link rel="stylesheet" href="../assets/portal-professional.css?v=portal-v2-visible">
-</head>
-<body class="portal-page-v2">
-<header class="header portal-topbar">
-  <nav class="nav">
-    <a class="brand" href="../"><img class="brand-logo-img" src="../assets/overwatch-eld-logo.svg" alt="OverWatch ELD logo"><span>OverWatch ELD</span></a>
-    <div class="nav-links">
-      <a href="../live-map/">Live Map</a>
-      <a href="../load-board/">Load Board</a>
-      <a href="../dispatch/">Dispatch</a>
-      <a href="../portal/" aria-current="page">Portal</a>
-    </div>
-  </nav>
-</header>
-
-<main class="portal-shell-v2">
-  <section class="portal-hero-v2">
-    <div class="portal-bg-grid"></div>
-    <div class="wrap portal-hero-grid-v2">
-      <div class="portal-hero-copy-v2">
-        <div class="logo-lockup">
-          <span><img src="../assets/overwatch-eld-logo.svg" alt="OverWatch ELD"></span>
-          <span><img src="../assets/ats-simulator-logo.svg" alt="ATS Simulator"></span>
-          <em>ATS / Simulator VTC Portal</em>
-        </div>
-        <p class="eyebrow">Driver portal • Fleet view • ELD workflow</p>
-        <h1>A realistic driver portal for ATS fleets running OverWatch ELD.</h1>
-        <p class="lead">View duty status, HOS clocks, DVIR condition, assigned truck, trailer, BOL number, route progress, GPS location, odometer, dispatch notes, and recent log events from one professional command screen.</p>
-        <div class="portal-actions-v2">
-          <a class="btn primary" href="../login/">Driver Login</a>
-          <a class="btn secondary" href="../live-map/">Open Live Map</a>
-          <a class="btn secondary" href="../dispatch/">Dispatch Center</a>
-        </div>
-        <div class="portal-status-strip">
-          <div><span>ELD Status</span><strong class="ok">Connected</strong></div>
-          <div><span>Last Sync</span><strong>42 sec ago</strong></div>
-          <div><span>Mode</span><strong>ATS VTC</strong></div>
-        </div>
-      </div>
-      <div class="portal-command-card" aria-label="ELD dashboard preview">
-        <div class="command-head"><span>OverWatch Console</span><strong>Unit OW-214</strong></div>
-        <div class="hos-grid">
-          <div class="hos-card drive"><span>Drive Time Left</span><strong>07:42</strong><small>11-hour clock</small></div>
-          <div class="hos-card"><span>Shift Left</span><strong>10:18</strong><small>14-hour window</small></div>
-          <div class="hos-card"><span>Cycle Left</span><strong>48:30</strong><small>70-hour / 8-day</small></div>
-          <div class="hos-card"><span>Break Due</span><strong>02:12</strong><small>30-minute break</small></div>
-        </div>
-        <div class="route-panel">
-          <img src="../assets/ats-route-map.svg" alt="ATS route map preview">
-          <div>
-            <span class="tag">In Transit</span>
-            <h3>Phoenix, AZ → Denver, CO</h3>
-            <p>Load OW-2481 • Refrigerated medicine • 476 mi remaining</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="wrap portal-dashboard-v2">
-    <div class="portal-section-title">
-      <p class="eyebrow">What drivers see</p>
-      <h2>Real ELD information without fake filler.</h2>
-      <p>These panels use the type of data a driver or dispatcher actually needs during a logged trip.</p>
-    </div>
-
-    <div class="driver-grid-v2">
-      <article class="driver-card main-driver">
-        <div class="card-topline"><span>Active Driver</span><strong class="ok">Driving</strong></div>
-        <div class="driver-row">
-          <div class="avatar-truck">T680</div>
-          <div><h3>Jordan Miller</h3><p>Kenworth T680 • Trailer R-442 • ATS Convoy Channel 3</p></div>
-        </div>
-        <dl class="facts-grid">
-          <div><dt>Current Location</dt><dd>I-40 EB near Albuquerque, NM</dd></div>
-          <div><dt>Speed</dt><dd>64 mph</dd></div>
-          <div><dt>Odometer</dt><dd>184,220 mi</dd></div>
-          <div><dt>Engine Hours</dt><dd>6,912.4</dd></div>
-          <div><dt>BOL</dt><dd>BOL-771924</dd></div>
-          <div><dt>DVIR</dt><dd class="ok">No defects reported</dd></div>
-        </dl>
-      </article>
-
-      <article class="driver-card mobile-card">
-        <img src="../assets/portal-mobile-eld.svg" alt="Mobile ELD app preview">
-        <h3>Mobile driver view</h3>
-        <p>Drivers can check clocks, change duty status, certify logs, complete DVIR, and show inspection mode from a clean mobile screen.</p>
-      </article>
-
-      <article class="driver-card log-card">
-        <div class="card-topline"><span>Today’s Log</span><strong>Jun 15</strong></div>
-        <ul class="timeline-v2">
-          <li><b>06:15</b><span>On Duty — Pre-trip inspection completed</span></li>
-          <li><b>06:42</b><span>Driving — Departed Phoenix terminal</span></li>
-          <li><b>10:05</b><span>Off Duty — 30 minute break started</span></li>
-          <li><b>10:37</b><span>Driving — Break satisfied, route resumed</span></li>
-          <li><b>13:58</b><span>Yard Move — Fuel stop and trailer check</span></li>
-        </ul>
-      </article>
-    </div>
-  </section>
-
-  <section class="portal-ops-band">
-    <div class="wrap ops-grid-v2">
-      <div>
-        <p class="eyebrow">Dispatcher view</p>
-        <h2>Manage VTC operations like a real carrier dashboard.</h2>
-        <p>Keep the simulator theme, but show believable operational data: live drivers, load status, compliance alerts, vehicle assignments, inspection status, and route progress.</p>
-      </div>
-      <div class="ops-table-card">
-        <table>
-          <thead><tr><th>Driver</th><th>Load</th><th>Status</th><th>HOS</th></tr></thead>
-          <tbody>
-            <tr><td>J. Miller</td><td>OW-2481</td><td><span class="pill green">In Transit</span></td><td>7h 42m</td></tr>
-            <tr><td>A. Collins</td><td>OW-2487</td><td><span class="pill blue">Loading</span></td><td>9h 11m</td></tr>
-            <tr><td>M. Ray</td><td>OW-2490</td><td><span class="pill amber">Break</span></td><td>5h 04m</td></tr>
-            <tr><td>S. Turner</td><td>Unassigned</td><td><span class="pill gray">Off Duty</span></td><td>11h 00m</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="wrap feature-cards-v2">
-    <article><span>01</span><h3>Hours of Service</h3><p>11-hour drive clock, 14-hour shift window, cycle remaining, break status, duty changes, and log certification.</p></article>
-    <article><span>02</span><h3>Inspections & DVIR</h3><p>Pre-trip, post-trip, defect notes, corrected status, vehicle condition, and inspection mode for log review.</p></article>
-    <article><span>03</span><h3>ATS Fleet Data</h3><p>Truck model, trailer, route, city pair, convoy status, VTC role, mileage, and simulator-friendly load records.</p></article>
-    <article><span>04</span><h3>Dispatch Workflow</h3><p>Assigned loads, BOL documents, route notes, delivery status, live map visibility, and driver messaging.</p></article>
-  </section>
-</main>
-
-<footer class="footer">
-  <div class="wrap">© OverWatch ELD • ATS Simulator themed fleet portal</div>
-</footer>
-
-<script>
-  document.querySelectorAll('.portal-command-card, .driver-card, .feature-cards-v2 article').forEach((el, i) => {
-    el.style.animationDelay = (i * 70) + 'ms';
-    el.classList.add('rise-in');
-  });
-</script>
-</body>
-</html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Portal Management | OverWatch ELD</title><link rel="stylesheet" href="../../assets/styles.css?v=phase5-persistent-ui-v1"><style>.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.tabs button{border:1px solid var(--border);background:#0b121a;color:#dbe6f5;border-radius:999px;padding:10px 14px;font-weight:900;cursor:pointer}.tabs button.active,.tabs button:hover{border-color:var(--gold);color:var(--gold)}.tab{display:none}.tab.active{display:block}.audit{max-height:360px;overflow:auto;border:1px solid var(--border);border-radius:16px;background:#081019}.audit div{padding:12px 14px;border-bottom:1px solid var(--border)}.modal-form{display:grid;gap:12px}.small-actions{display:flex;gap:8px;flex-wrap:wrap}</style></head><body>
+<header class="header"><nav class="nav"><a class="brand" href="../../"><span class="brand-mark">OW</span><span>OverWatch ELD</span></a><div class="nav-links"><a href="../">Portal</a><a href="../../vtc/">Find a VTC</a><a href="../../live-map/">Live Map</a></div></nav></header>
+<main id="app" class="portal-shell" data-api-base="https://api.overwatcheld.com"><section id="loading" class="wrap"><div class="panel"><div class="kicker">Phase 5</div><h1>Loading management...</h1></div></section><section id="denied" class="wrap" hidden><div class="panel"><h1>Management access required.</h1><a class="btn" href="../">Back to Portal</a></div></section><section id="content" hidden><section class="hero"><div class="wrap hero-grid"><div><div class="kicker">Phase 5 Persistent Management</div><h1 id="title">VTC Management</h1><p class="lead">Applications, roster, fleet, awards, garages, and activity connected to portal storage.</p><div class="actions"><a id="portalBtn" class="btn" href="../">View Portal</a><button id="saveMain" class="btn secondary">Save Main Settings</button></div><div id="msg" class="notice" hidden></div></div><div class="panel"><h3>Stats</h3><div class="status-row"><span>Role</span><strong id="role">--</strong></div><div class="status-row"><span>Members</span><strong id="members">0</strong></div><div class="status-row"><span>Trucks</span><strong id="trucks">0</strong></div><div class="status-row"><span>Pending Apps</span><strong id="pending">0</strong></div></div></div></section><section class="wrap"><div class="tabs"><button class="active" data-tab="company">Company</button><button data-tab="apps">Applications</button><button data-tab="roster">Roster</button><button data-tab="fleet">Fleet</button><button data-tab="awards">Awards</button><button data-tab="garages">Garages</button><button data-tab="audit">Activity</button></div>
+<section id="company" class="tab active"><div class="portal-grid-main"><div class="panel"><h2>VTC Info</h2><div class="form"><label>Name<input id="companyName" class="input"></label><label>Welcome<input id="welcomeText" class="input"></label><label>About<textarea id="companyInfo" class="input"></textarea></label><label>Recruiting<textarea id="recruitingMessage" class="input"></textarea></label><label><input id="publicDirectoryListed" type="checkbox" checked> Show in Find a VTC</label></div></div><div class="panel"><h2>Branding</h2><div class="form"><label>Logo URL<input id="logoImageUrl" class="input"></label><label>Banner URL<input id="bannerImageUrl" class="input"></label><label>Hero URL<input id="heroImageUrl" class="input"></label></div></div></div></section>
+<section id="apps" class="tab"><div class="portal-grid-main"><div class="panel"><h2>Application Settings</h2><div class="form"><label>Status<select id="acceptingApplications" class="input"><option value="true">Accepting Applications</option><option value="false">Closed</option></select></label><label>Requirements<textarea id="publicRequirements" class="input"></textarea></label><button id="saveApps" class="btn">Save Application Settings</button></div></div><div class="panel"><h2>Questions</h2><div id="questionsBox" class="form"></div><div class="actions"><button id="addQuestion" class="btn secondary">Add Question</button><button id="saveQuestions" class="btn">Save Questions</button></div></div></div><div class="panel" style="margin-top:18px"><h2>Applications</h2><div id="appsGrid" class="portal-card-grid"></div></div></section>
+<section id="roster" class="tab"><div class="panel"><div class="section-title-row"><div><h2>Roster</h2><p class="lead">Role, truck, and award changes save into portal roster storage.</p></div><input id="rosterSearch" class="input roster-search" placeholder="Search..."></div><div class="table-wrap roster-scroll-wrap"><table class="table"><thead><tr><th>Driver</th><th>Role</th><th>Truck</th><th>Status</th><th>Actions</th></tr></thead><tbody id="rosterBody"></tbody></table></div></div></section>
+<section id="fleet" class="tab"><div class="panel"><div class="section-title-row"><h2>Fleet</h2><button id="addTruck" class="btn">Add Truck</button></div><div id="fleetGrid" class="portal-card-grid"></div></div></section><section id="awards" class="tab"><div class="panel"><div class="section-title-row"><h2>Awards</h2><button id="addAward" class="btn">Assign Award</button></div><div id="awardsGrid" class="portal-card-grid"></div></div></section><section id="garages" class="tab"><div class="panel"><div class="section-title-row"><h2>Garages</h2><button id="addGarage" class="btn">Add Garage</button></div><div id="garagesGrid" class="portal-card-grid"></div></div></section><section id="audit" class="tab"><div class="panel"><h2>Activity</h2><div id="auditLog" class="audit"></div></div></section></section></section>
+<div id="modal" class="modal-backdrop" hidden style="display:none"><div class="modal-card"><button id="closeModal" class="modal-close">×</button><div class="kicker" id="modalKicker">Management</div><h2 id="modalTitle">Action</h2><div id="modalBody" class="modal-form"></div><div class="actions"><button id="modalSave" class="btn">Save</button><button id="modalCancel" class="btn secondary">Cancel</button></div></div></div></main><footer class="footer"><div class="wrap"><span>OverWatch ELD © 2026 Gas Monkey Creations</span></div></footer>
+<script>(function(){const A=document.getElementById('app'),base=A.dataset.apiBase||'https://api.overwatcheld.com',token=localStorage.getItem('oweld_session_token')||'',storedGuild=localStorage.getItem('oweld_guild_id')||'';let gid=storedGuild,roster=[],fleet=[],garages=[],awards=[],questions=[],settings={},audit=[],modalAction=null;if(!token){location.replace('../../login/?returnUrl=/portal/admin/');return}tabs();modalSetup();load();async function get(p){const r=await fetch(base+p,{cache:'no-store',headers:{Authorization:'Bearer '+token,'X-OverWatch-Session':token}});if(r.status===401){localStorage.removeItem('oweld_session_token');location.href='../../login/?returnUrl=/portal/admin/';throw new Error('Not authenticated')}if(!r.ok)throw new Error('Request failed '+r.status);return await r.json()}async function post(p,b){const r=await fetch(base+p,{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+token,'X-OverWatch-Session':token},body:JSON.stringify(b||{})});const d=await r.json().catch(()=>({}));if(!r.ok||d.ok===false)throw new Error(d.error||('Save failed '+r.status));return d}
+async function load(){try{const s=gid?'?guildId='+encodeURIComponent(gid):'';let data;try{data=await get('/api/portal/me-email'+s)}catch{data=await get('/api/portal/me'+s)}const v=data.vtc||{};if(!v.canEditPortal){id('loading').hidden=true;id('denied').hidden=false;return}gid=data.guildId||gid;localStorage.setItem('oweld_guild_id',gid);id('portalBtn').href='../?guildId='+encodeURIComponent(gid);txt('title',(v.name||'VTC')+' Management');txt('role',v.myRole||'Manager');val('companyName',v.name);val('welcomeText',v.description);val('companyInfo',v.about);val('recruitingMessage',v.description);roster=data.roster||[];fleet=data.fleet||data.trucks||[];garages=data.garages||[];awards=data.awards||data.achievements||[];const st=data.stats||{};txt('members',st.members??roster.length);txt('trucks',st.fleetTrucks??fleet.length);renderRoster();renderFleet();renderAwards();renderGarages();await loadSettings();await loadPublic();await loadApps();renderAudit();id('loading').hidden=true;id('content').hidden=false}catch(e){id('loading').innerHTML='<div class="panel"><h1>Could not load management.</h1><p>'+esc(e.message)+'</p></div>'}}
+async function loadSettings(){const d=await get('/api/vtc/portal/settings?guildId='+encodeURIComponent(gid));settings=d.data||{};val('logoImageUrl',settings.logoImageUrl||settings.LogoImageUrl);val('bannerImageUrl',settings.bannerImageUrl||settings.BannerImageUrl);val('heroImageUrl',settings.heroImageUrl||settings.HeroImageUrl)}async function loadPublic(){const d=await get('/api/vtc/public/'+encodeURIComponent(gid));const p=d.profile||{};questions=p.questions||[];val('acceptingApplications',String(p.acceptingApplications!==false));val('publicRequirements',p.requirements);renderQuestions()}async function loadApps(){try{const d=await get('/api/vtc/admin/'+encodeURIComponent(gid)+'/applications');const apps=d.applications||[];txt('pending',apps.filter(a=>String(a.status).toLowerCase()==='pending').length);const g=id('appsGrid');g.innerHTML='';if(!apps.length){g.innerHTML='<div class="card"><h3>No applications</h3></div>';return}apps.forEach(a=>{const c=card(a.applicantName,(a.answers||[]).map(x=>'<b>'+esc(x.question)+':</b><br>'+esc(x.answer)).join('<br><br>')+'<br><br>'+esc(a.applicantEmail||'')+' '+esc(a.applicantDiscord||''),a.status);c.innerHTML+='<div class="actions"><button class="btn approve">Approve</button><button class="btn secondary interview">Interview</button><button class="btn secondary deny">Deny</button></div>';c.querySelector('.approve').onclick=()=>approveApp(a);c.querySelector('.interview').onclick=()=>review(a.id,'Interview');c.querySelector('.deny').onclick=()=>review(a.id,'Denied');g.appendChild(c)})}catch(e){id('appsGrid').innerHTML='<div class="card"><h3>Applications unavailable</h3><p>'+esc(e.message)+'</p></div>'}}
+async function approveApp(a){const notes=prompt('Approval notes:')||'';await post('/api/vtc/admin/'+encodeURIComponent(gid)+'/applications/'+encodeURIComponent(a.id)+'/review',{status:'Approved',notes});const driver={Id:'',Name:a.applicantName||'Driver',DiscordUsername:a.applicantDiscord||'',DiscordUserId:a.applicantDiscordUserId||'',Role:'Driver',Status:'Approved',AssignedTruck:'',Achievement:''};await post('/api/vtc/portal/drivers?guildId='+encodeURIComponent(gid),driver);log('Application approved',driver.Name);ok('Application approved and driver added to roster');await load()}async function review(appId,status){const notes=prompt('Review notes:')||'';if(status==='Interview'){log('Interview marked','Application '+appId);ok('Interview status staged locally until interview route is registered.')}else{await post('/api/vtc/admin/'+encodeURIComponent(gid)+'/applications/'+encodeURIComponent(appId)+'/review',{status,notes});log('Application '+status,'Application '+appId);ok('Application '+status);await loadApps()}}
+id('saveMain').onclick=saveMain;async function saveMain(){settings.GuildId=gid;settings.CompanyName=val('companyName');settings.SiteTitle=val('companyName');settings.WelcomeText=val('welcomeText');settings.CompanyInfo=val('companyInfo');settings.PublicRecruitingMessage=val('recruitingMessage');settings.LogoImageUrl=val('logoImageUrl');settings.BannerImageUrl=val('bannerImageUrl');settings.HeroImageUrl=val('heroImageUrl')||val('bannerImageUrl');settings.CompanyPictureUrl=val('bannerImageUrl');settings.Drivers=normalizeDriversForSave(roster);settings.Trucks=fleet;settings.Garages=garages;settings.FeaturedDrivers=awardsToFeatured();await post('/api/portal/about',{guildId:gid,about:val('companyInfo')});await post('/api/vtc/portal/settings',settings);await saveAppSettings(false);log('Main settings saved','Company, branding, roster, fleet, awards, and garages saved');ok('Main settings saved')}id('saveApps').onclick=()=>saveAppSettings(true);async function saveAppSettings(show){await post('/api/vtc/admin/'+encodeURIComponent(gid)+'/settings',{isAcceptingApplications:val('acceptingApplications')==='true',isPublicDirectoryListed:id('publicDirectoryListed').checked,publicRequirements:val('publicRequirements'),publicRecruitingMessage:val('recruitingMessage')});if(show){ok('Application settings saved');log('Application settings saved',val('acceptingApplications'))}}
+id('addQuestion').onclick=()=>{questions.push({question:'',type:'textarea',required:true});renderQuestions()};id('saveQuestions').onclick=async()=>{readQuestions();await post('/api/vtc/admin/'+encodeURIComponent(gid)+'/questions',{questions});ok('Questions saved');log('Questions saved',questions.length+' questions')};function renderQuestions(){const b=id('questionsBox');b.innerHTML='';if(!questions.length)questions.push({question:'Why do you want to join this VTC?',type:'textarea',required:true});questions.forEach((q,i)=>{const r=document.createElement('div');r.className='card';r.innerHTML='<textarea class="input q" data-i="'+i+'">'+esc(q.question||'')+'</textarea><label><input class="qr" data-i="'+i+'" type="checkbox" '+(q.required?'checked':'')+'> Required</label><button class="btn secondary rem">Remove</button>';r.querySelector('.rem').onclick=()=>{questions.splice(i,1);renderQuestions()};b.appendChild(r)})}function readQuestions(){document.querySelectorAll('.q').forEach(x=>questions[+x.dataset.i].question=x.value);document.querySelectorAll('.qr').forEach(x=>questions[+x.dataset.i].required=x.checked)}function renderRoster(){const b=id('rosterBody'),q=val('rosterSearch').toLowerCase();b.innerHTML='';(q?roster.filter(x=>JSON.stringify(x).toLowerCase().includes(q)):roster).forEach(m=>{const tr=document.createElement('tr');tr.innerHTML='<td>'+esc(m.userName||m.name||'Driver')+'</td><td>'+esc(m.role||'Driver')+'</td><td>'+esc(m.currentTruck||m.assignedTruck||'')+'</td><td>'+esc(m.status||'')+'</td><td><button class="btn secondary role">Role</button> <button class="btn secondary truck">Truck</button> <button class="btn secondary award">Award</button></td>';tr.querySelector('.role').onclick=()=>role(m);tr.querySelector('.truck').onclick=()=>assignTruck(m);tr.querySelector('.award').onclick=()=>award(m);b.appendChild(tr)})}id('rosterSearch').oninput=renderRoster;
+function renderFleet(){const g=id('fleetGrid');g.innerHTML='';if(!fleet.length){g.innerHTML='<div class="card"><h3>No trucks</h3></div>';return}fleet.forEach((t,i)=>{const c=card('#'+esc(t.truckNumber||'')+' '+esc(t.name||t.model||'Truck'),'Driver: '+esc(t.driver||'')+'<br>Plate: '+esc(t.plate||'')+'<br>Location: '+esc(t.location||''),t.status||'Truck');c.innerHTML+='<div class="small-actions"><button class="btn secondary edit">Edit</button><button class="btn secondary del">Remove</button></div>';c.querySelector('.edit').onclick=()=>editTruck(t,i);c.querySelector('.del').onclick=()=>{fleet.splice(i,1);renderFleet();saveAllSoon('Truck removed')};g.appendChild(c)})}function renderAwards(){const g=id('awardsGrid');g.innerHTML='';if(!awards.length){g.innerHTML='<div class="card"><h3>No awards</h3></div>';return}awards.forEach((a,i)=>{const c=card(a.title||a.name||a.Achievement||'Award',a.body||a.description||a.Bio||'',a.meta||'Award');c.innerHTML+='<button class="btn secondary del">Remove</button>';c.querySelector('.del').onclick=()=>{awards.splice(i,1);renderAwards();saveAllSoon('Award removed')};g.appendChild(c)})}function renderGarages(){const g=id('garagesGrid');g.innerHTML='';if(!garages.length){g.innerHTML='<div class="card"><h3>No garages</h3></div>';return}garages.forEach((x,i)=>{const c=card(x.cityName||x.city||'Garage','State: '+esc(x.state||'')+'<br>Slots: '+esc(x.slots||x.truckCapacity||''),x.isOwned?'Owned':'Garage');c.innerHTML+='<div class="small-actions"><button class="btn secondary edit">Edit</button><button class="btn secondary del">Remove</button></div>';c.querySelector('.edit').onclick=()=>editGarage(x,i);c.querySelector('.del').onclick=()=>{garages.splice(i,1);renderGarages();saveAllSoon('Garage removed')};g.appendChild(c)})}
+id('addTruck').onclick=()=>editTruck({},-1);id('addAward').onclick=()=>award({});id('addGarage').onclick=()=>editGarage({},-1);function role(m){open('Role','Roster',select('roleSel',['Driver','Dispatch','Mechanic','Manager','Admin'],m.role||'Driver'),async()=>{m.role=val('roleSel');m.Role=m.role;await saveDriver(m);ok('Role saved');log('Role saved',(m.userName||m.name)+' -> '+m.role);renderRoster()})}function assignTruck(m){open('Assign Truck','Fleet',input('Truck / Unit','truckAssign',m.currentTruck||m.assignedTruck||'')+input('Truck Number','truckNumberAssign',m.truckNumber||''),async()=>{m.currentTruck=val('truckAssign');m.assignedTruck=val('truckAssign');m.AssignedTruck=val('truckAssign');let t=fleet.find(x=>String(x.truckNumber||'')===val('truckNumberAssign')||String(x.name||x.model||'')===val('truckAssign'));if(!t){t={truckNumber:val('truckNumberAssign'),name:val('truckAssign'),status:'Assigned'};fleet.push(t)}t.driver=m.userName||m.name;t.Driver=t.driver;t.status='Assigned';await saveDriver(m);await saveTruck(t);renderRoster();renderFleet();ok('Truck assignment saved');log('Truck assigned',(m.userName||m.name)+' -> '+val('truckAssign'))})}function award(m){open('Assign Award','Awards',input('Driver','awardDriver',m.userName||m.name||'')+input('Award Name','awardName','Safe Driver Award')+input('Notes','awardNotes',''),async()=>{const a={title:val('awardName'),body:val('awardDriver')+' - '+val('awardNotes'),meta:'Award',Name:val('awardDriver'),Achievement:val('awardName'),Bio:val('awardNotes')};awards.push(a);if(m){m.awards=[...(m.awards||[]),val('awardName')];m.Achievement=val('awardName');await saveDriver(m)}await saveMain();renderAwards();ok('Award saved');log('Award saved',val('awardName'))})}function editTruck(t,i){open(i>=0?'Edit Truck':'Add Truck','Fleet',input('Truck Name','truckName',t.name||t.model||'')+input('Truck Number','truckNum',t.truckNumber||'')+input('Driver','truckDriver',t.driver||'')+input('Plate','truckPlate',t.plate||'')+input('Location','truckLocation',t.location||''),async()=>{t.name=val('truckName');t.Name=t.name;t.truckNumber=val('truckNum');t.TruckNumber=t.truckNumber;t.driver=val('truckDriver');t.Driver=t.driver;t.plate=val('truckPlate');t.Plate=t.plate;t.location=val('truckLocation');t.Location=t.location;t.status=t.status||'Available';if(i<0)fleet.push(t);await saveTruck(t);renderFleet();ok('Truck saved');log('Truck saved',t.name||t.truckNumber)})}function editGarage(g,i){open(i>=0?'Edit Garage':'Add Garage','Garages',input('City','garageCity',g.cityName||g.city||'')+input('State','garageState',g.state||'')+input('Slots','garageSlots',g.slots||g.truckCapacity||''),async()=>{g.cityName=val('garageCity');g.CityName=g.cityName;g.city=val('garageCity');g.City=g.city;g.state=val('garageState');g.State=g.state;g.slots=val('garageSlots');g.Slots=g.slots;g.isOwned=true;g.IsOwned=true;if(i<0)garages.push(g);await saveGarage(g);renderGarages();ok('Garage saved');log('Garage saved',g.cityName||g.city)})}
+async function saveDriver(m){const d={Id:m.id||m.Id||'',Name:m.userName||m.name||m.Name||'Driver',Role:m.role||m.Role||'Driver',DiscordUserId:m.discordUserId||m.DiscordUserId||'',DiscordUsername:m.discordUsername||m.DiscordUsername||'',AssignedTruck:m.currentTruck||m.assignedTruck||m.AssignedTruck||'',FavoriteTruck:m.favoriteTruck||'',Mileage:String(m.mileage||m.totalMileage||m.TotalMiles||0),TotalMiles:String(m.totalMileage||m.TotalMiles||m.mileage||0),MonthlyMiles:String(m.monthlyMiles||m.MonthlyMiles||0),Achievement:m.Achievement||asArray(m.awards).join(', '),Status:m.status||m.Status||'Member',DiscordAvatarUrl:m.avatarUrl||m.DiscordAvatarUrl||''};await post('/api/vtc/portal/drivers?guildId='+encodeURIComponent(gid),d)}async function saveTruck(t){const payload={Id:t.id||t.Id||'',TruckNumber:t.truckNumber||t.TruckNumber||'',Name:t.name||t.Name||'',Model:t.model||t.Model||'',Driver:t.driver||t.Driver||'',DriverDiscordUserId:t.driverDiscordUserId||t.DriverDiscordUserId||'',Plate:t.plate||t.Plate||'',Odometer:t.odometer||t.Odometer||'',Location:t.location||t.Location||'',Status:t.status||t.Status||'Available',Condition:t.condition||t.Condition||'',Fuel:t.fuel||t.Fuel||'',Notes:t.notes||t.Notes||''};await post('/api/vtc/portal/fleet?guildId='+encodeURIComponent(gid),payload)}async function saveGarage(g){const payload={Id:g.id||g.Id||'',City:g.city||g.City||g.cityName||'',CityName:g.cityName||g.CityName||g.city||'',State:g.state||g.State||'',Country:g.country||g.Country||'USA',Slots:String(g.slots||g.Slots||g.truckCapacity||''),Size:g.size||g.Size||'Small',TruckCapacity:Number(g.truckCapacity||g.TruckCapacity||g.slots||3)||3,IsOwned:g.isOwned!==false,Notes:g.notes||g.Notes||''};await post('/api/vtc/portal/garages?guildId='+encodeURIComponent(gid),payload)}function saveAllSoon(reason){saveMain().then(()=>log(reason,'Saved')).catch(e=>ok(e.message,true))}
+function normalizeDriversForSave(list){return list.map(m=>({Id:m.id||m.Id||'',Name:m.userName||m.name||m.Name||'Driver',Role:m.role||m.Role||'Driver',DiscordUserId:m.discordUserId||m.DiscordUserId||'',DiscordUsername:m.discordUsername||m.DiscordUsername||'',AssignedTruck:m.currentTruck||m.assignedTruck||m.AssignedTruck||'',Mileage:String(m.mileage||m.totalMileage||0),TotalMiles:String(m.totalMileage||m.mileage||0),MonthlyMiles:String(m.monthlyMiles||0),Achievement:m.Achievement||asArray(m.awards).join(', '),Status:m.status||'Member',DiscordAvatarUrl:m.avatarUrl||''}))}function awardsToFeatured(){return awards.map(a=>({Name:a.Name||a.driver||'',Achievement:a.Achievement||a.title||a.name||'Award',Bio:a.Bio||a.body||a.description||'',Role:'Driver'}))}function renderAudit(){id('auditLog').innerHTML=audit.length?audit.map(a=>'<div><strong>'+esc(a.t)+'</strong><br><span>'+esc(a.d)+' • '+esc(a.at)+'</span></div>').join(''):'<div><strong>No local activity yet</strong><br><span>Actions in this page appear here and persistent actions save to portal storage.</span></div>'}function log(t,d){audit.unshift({t,d,at:new Date().toLocaleString()});audit=audit.slice(0,80);renderAudit()}function tabs(){document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.tab').forEach(p=>p.classList.toggle('active',p.id===b.dataset.tab))})}function modalSetup(){id('closeModal').onclick=close;id('modalCancel').onclick=close;id('modalSave').onclick=()=>{if(modalAction)modalAction();close()};id('modal').onclick=e=>{if(e.target===id('modal'))close()}}function open(t,k,b,fn){txt('modalTitle',t);txt('modalKicker',k);id('modalBody').innerHTML=b;modalAction=fn;id('modal').hidden=false;id('modal').style.display='grid'}function close(){id('modal').hidden=true;id('modal').style.display='none';modalAction=null}function input(l,i,v){return '<label>'+esc(l)+'<input id="'+i+'" class="input" value="'+escAttr(v||'')+'"></label>'}function select(i,o,v){return '<select id="'+i+'" class="input">'+o.map(x=>'<option '+(x===v?'selected':'')+'>'+esc(x)+'</option>').join('')+'</select>'}function card(t,b,m){const d=document.createElement('div');d.className='card portal-info-card';d.innerHTML='<div class="kicker">'+esc(m||'Info')+'</div><h3>'+esc(t||'Untitled')+'</h3><p>'+(b||'')+'</p>';return d}function ok(t,e){const b=id('msg');b.hidden=false;b.textContent=t;b.classList.toggle('error-notice',!!e)}function id(x){return document.getElementById(x)}function txt(x,v){id(x).textContent=String(v??'')}function val(x,v){if(arguments.length>1){id(x).value=v||'';return}return id(x)?.value||''}function asArray(v){return Array.isArray(v)?v:(v?[v]:[])}function esc(v){return String(v??'').replace(/[&<>'\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function escAttr(v){return esc(v).replace(/`/g,'')}})();</script></body></html>
